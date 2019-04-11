@@ -54,13 +54,13 @@ class MotionDetectorAdaptative():
                 if self.somethingHasMoved():
                     self.trigger_time = instant #Update the trigger_time
                     if instant > started +10:#Wait 5 second after the webcam start for luminosity adjusting etc..
-                        print "Something is moving !"
+                        print("Something is moving !")
                         if self.doRecord: #set isRecording=True only if we record a video
                             self.isRecording = True
                 cv.DrawContours (currentframe, self.currentcontours, (0, 0, 255), (0, 255, 0), 1, 2, cv.CV_FILLED)
             else:
                 if instant >= self.trigger_time +10: #Record during 10 seconds
-                    print "Stop recording"
+                    print("Stop recording")
                     self.isRecording = False
                 else:
                     cv.PutText(currentframe,datetime.now().strftime("%b %d, %H:%M:%S"), (25,30),self.font, 0) #Put date on the frame
