@@ -32,7 +32,7 @@ def home():
     files.sort()
     return render_template('home.html', files=files)
 
-@app.route('/done')
+@app.route('/videos')
 def done():
     imagepath = "/Users/haroonkhazi/desktop/eecs377/final_project/templates/static/"
     files = []
