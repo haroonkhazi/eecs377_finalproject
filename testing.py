@@ -5,6 +5,7 @@ import imutils
 import time
 import cv2
 import os
+import upload
 
 # construct the argument parser and parse the arguments
 
@@ -62,9 +63,9 @@ def main():
                 path = '/Users/haroonkhazi/desktop/eecs377/final_project/videos'
                 cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
                     (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
-                #cv2.imwrite(os.path.join(path , img_name), frame)
+                cv2.imwrite(os.path.join(path , img_name), frame)
                 #cv2.imwrite(img_name, frame)
-                capture_frame(num)
+                #capture_frame(num)
                 num = num + 1
 
 
@@ -80,6 +81,7 @@ def main():
         #cv2.imshow("Frame Delta", frameDelta)
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
+
             break
 
     vs.stop()
