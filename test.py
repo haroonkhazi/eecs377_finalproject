@@ -1,4 +1,4 @@
-import cv2.cv as cv
+import cv2 as cv
 from datetime import datetime
 import time
 
