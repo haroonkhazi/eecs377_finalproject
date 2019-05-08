@@ -35,7 +35,7 @@ def main():
     vs = VideoStream(src=0).start()
     time.sleep(2.0)
     firstFrame = None
-
+    minarea=500
     while True:
         frame = vs.read()
         #text = "Unoccupied"
@@ -58,7 +58,7 @@ def main():
         cnts = imutils.grab_contours(cnts)
         num = 0
         for c in cnts:
-            if cv2.contourArea(c) > args["min_area"]:
+            if cv2.contourArea(c) > minarea:
                 (x, y, w, h) = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 text = "Occupied"
