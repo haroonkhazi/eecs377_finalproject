@@ -10,19 +10,24 @@ import cv2
 
 def capture_frame(num):
     cap = cv2.VideoCapture(0)
-    fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
-    frame_width = int(cap.get(3))
-    frame_height = int(cap.get(4))
-    out = cv2.VideoWriter('/videos/{}_video.avi'.format(num),fourcc, 25, (frame_width,frame_height))
+    #fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
+    #frame_width = int(cap.get(3))
+    #frame_height = int(cap.get(4))
 
+    #out = cv2.VideoWriter('/videos/{}_video.avi'.format(num),fourcc, 25, (frame_width,frame_height))
     endtime = time.time() + 10
+    sub=0
     while time.time() < endtime:
-        ret, frame = cap.read()
+        return_value, image = cap.read()
+    #    ret, frame = cap.read()
         cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
             (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
         cv2.putText(frame, "Room Status: occupied", (10, 20),
             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        out.write(frame)
+        img_name = "/videos/picture_frame_{}_{}.png".format(num,sub)
+        cv2.imwrite(img_name, image)
+        sub=sub+1
+    #    out.write(frame)
     cap.release()
     out.release()
 
@@ -57,6 +62,7 @@ def main():
                 (x, y, w, h) = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 text = "Occupied"
+                cv2.imwrite(img_name, frame)
                 capture_frame(num)
                 num = num + 1
 
