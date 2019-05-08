@@ -15,5 +15,8 @@ def main():
     ssh_client.connect(hostname='ec2-18-208-211-130.compute-1.amazonaws.com', username='ubuntu', pkey=k)
     ftp_client=ssh_client.open_sftp()
     for f in files:
-        ftp_client.put('videos/{}'.format(f),'/home/ubuntu//website/videos/')
+        ftp_client.put('videos/{}'.format(f),'/home/ubuntu/website/videos/')
     ftp_client.close()
+
+if __name__=="__main__":
+    main()
