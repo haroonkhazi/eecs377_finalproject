@@ -81,12 +81,12 @@ def main():
                 (x, y, w, h) = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 text = "Occupied"
-                #img_name = "picture.frame.{}.png".format(NUM)
-                #path = '/home/pi/eecs377_finalproject/videos'
+                img_name = "{}.picture.png".format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video"))
+                path = '/home/pi/eecs377_finalproject/videos'
                 #cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
                 #    (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
-                #cv2.imwrite(os.path.join(path , img_name), frame)
-                capture_frame(num)
+                cv2.imwrite(os.path.join(path , img_name), frame)
+                #capture_frame(num)
                 num = num + 1
                 pi.set_PWM_dutycycle(PIN_R, 1000)
 
