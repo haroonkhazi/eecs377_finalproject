@@ -5,11 +5,8 @@ import imutils
 import time
 import cv2
 import os
-<<<<<<< HEAD
 import pigpio
-=======
 import upload
->>>>>>> eaabb644868823244d811363e32c40b12d905f97
 
 
 
@@ -77,24 +74,19 @@ def main():
         cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
             cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
-        num = 0
+        #num = 0
         for c in cnts:
             if cv2.contourArea(c) > minarea:
                 (x, y, w, h) = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 text = "Occupied"
-                img_name = "picture.frame.{}.png".format(num)
+                img_name = "picture.frame.{}.png".format(NUM)
                 path = '/home/pi/eecs377_finalproject/videos'
                 cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
                     (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
                 cv2.imwrite(os.path.join(path , img_name), frame)
-<<<<<<< HEAD
-               # capture_frame(num)
-=======
-                #cv2.imwrite(img_name, frame)
                 #capture_frame(num)
->>>>>>> eaabb644868823244d811363e32c40b12d905f97
-                num = num + 1
+                NUM = NUM + 1
                 pi.set_PWM_dutycycle(PIN_R, 1000)
 
 
