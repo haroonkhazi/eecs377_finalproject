@@ -5,7 +5,7 @@ import imutils
 import time
 import cv2
 import os
-#import pigpio
+import pigpio
 import upload
 
 
