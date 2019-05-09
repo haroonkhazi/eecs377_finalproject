@@ -81,6 +81,7 @@ def main():
                 (x, y, w, h) = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 text = "Occupied"
+                start_time = datetime.datetime.now()
                 img_name = "{}.picture.png".format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video"))
                 path = '/home/pi/eecs377_finalproject/videos'
                 #cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
