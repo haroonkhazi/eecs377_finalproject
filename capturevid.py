@@ -89,7 +89,7 @@ def main():
 
         if occupied and not occupied_prev:
             start_time = datetime.now()
-            video_name = "/home/pi/eecs377_finalproject/videos/{}".format(
+            video_name = "/Users/haroonkhazi/desktop/eecs377/final_project/videos/{}".format(
                         start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video"))
             writer = cv2.VideoWriter(video_name, 0x21, 30, (frame_width, frame_height),
                         True)

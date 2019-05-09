@@ -23,8 +23,8 @@ def capture_frame(num):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
-
-    out = cv2.VideoWriter('/home/pi/eecs377_finalproject/videos/{}.video.mp4'.format(num),fourcc, 30, (frame_width,frame_height))
+    start_time = datetime.datetime.now()
+    out = cv2.VideoWriter('/home/pi/eecs377_finalproject/videos/{}.mp4'.format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video")),fourcc, 30, (frame_width,frame_height))
     endtime = time.time() + 10
     while time.time() < endtime:
         ret, frame = cap.read()
