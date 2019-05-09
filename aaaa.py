@@ -91,7 +91,8 @@ def main():
                     frame_delta = cv2.absdiff(saved_frame, gray)
                     new_thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
                     print(np.sum(new_thresh))
-                    firstFrame = gray
+                    if np.sum(new_thresh) > 0:
+                        firstFrame = gray
                 if pic:
                     start_time = datetime.datetime.now()
                     img_name = "{}.picture.png".format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video"))
