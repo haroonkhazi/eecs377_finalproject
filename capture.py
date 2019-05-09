@@ -25,9 +25,9 @@ def capture_frame():
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
     start_time = datetime.datetime.now()
-    out = cv2.VideoWriter('/Users/haroonkhazi/Desktop/EECS377/final_project/videos/{}.mp4'.format(
+    out = cv2.VideoWriter('/home/pi/eecs377_finalproject/videos/{}.mp4'.format(
                             start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video")),
-                            0x31637661, 25, (frame_width,frame_height))
+                            0x21, 25, (frame_width,frame_height))
     endtime = time.time() + 10
     while time.time() < endtime:
         ret, frame = cap.read()
@@ -44,18 +44,16 @@ def capture_frame():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("-v", "--vid",help="Pictures or Videos to Capture? ")
-    args = vars(ap.parse_args())
+    ap.add_argument("-v", action='store_false', default=True, dest='boolean_switch',help="Pictures or Videos to Capture? ")
+    args = ap.parse_args()
     vs = VideoStream(src=0).start()
     time.sleep(2.0)
     firstFrame = None
     saved_frame=None
     minarea=500
     num = 0
-    pic=False
+    pic=args.boolean_switch
     num=0
-    if args.get("vid", None) is None:
-        pic=True
 
     while True:
         frame = vs.read()
@@ -95,8 +93,8 @@ def main():
                         firstFrame = gray
                 if pic:
                     start_time = datetime.datetime.now()
-                    img_name = "{}.picture.png".format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video"))
-                    path = '/Users/haroonkhazi/Desktop/EECS377/final_project/videos'
+                    img_name = "{}.picture.png".format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p"))
+                    path = '/home/pi/eecs377_finalproject/videos'
                     cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
                         (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
                     cv2.imwrite(os.path.join(path , img_name), frame)
