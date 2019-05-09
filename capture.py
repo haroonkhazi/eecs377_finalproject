@@ -5,7 +5,8 @@ import imutils
 import time
 import cv2
 import os
-import pigpio
+import numpy as np
+#import pigpio
 import upload
 
 
@@ -25,8 +26,8 @@ def capture_frame():
     frame_height = int(cap.get(4))
     start_time = datetime.datetime.now()
     out = cv2.VideoWriter('/Users/haroonkhazi/Desktop/EECS377/final_project/videos/{}.mp4'.format(
-                                        start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video")),
-                                        0x31637661, 25 (frame_width,frame_height))
+                            start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video")),
+                            0x31637661, 25, (frame_width,frame_height))
     endtime = time.time() + 10
     while time.time() < endtime:
         ret, frame = cap.read()
@@ -38,28 +39,27 @@ def capture_frame():
     cap.release()
     out.release()
 
-def setup():
-    pi = pigpio.pi()
-    for pin in PINS:
-        pi.set_mode(pin, pigpio.OUTPUT)
-        pi.write(pin, 0)
-        pi.set_PWM_frequency(pin, PWM_FREQUENCY)
-        pi.set_PWM_range(pin, PWM_RANGE)
-        pi.set_PWM_dutycycle(pin, 0)
-    return pi
+
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-v", "--vid",help="Pictures or Videos to Capture? ")
+    args = vars(ap.parse_args())
     vs = VideoStream(src=0).start()
     time.sleep(2.0)
     firstFrame = None
+    saved_frame=None
     minarea=500
     num = 0
-    pi = setup()
+    pic=False
+    num=0
+    if args.get("vid", None) is None:
+        pic=True
+
     while True:
         frame = vs.read()
         text = "Unoccupied"
-        pi.set_PWM_dutycycle(PIN_R, 0)
         if frame is None:
             break
 
@@ -69,7 +69,10 @@ def main():
 
         if firstFrame is None:
             firstFrame = gray
+            num=0
             continue
+        if saved_frame is None:
+            saved_frame=gray
 
         frameDelta = cv2.absdiff(firstFrame, gray)
         thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
@@ -77,20 +80,29 @@ def main():
         cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
             cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
-        #num = 0
+
         for c in cnts:
             if cv2.contourArea(c) > minarea:
                 (x, y, w, h) = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                text = "Occupied"
-                start_time = datetime.datetime.now()
-                img_name = "{}.picture.png".format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video"))
-                path = '/home/pi/eecs377_finalproject/videos'
-                #cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
-                #    (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
-                cv2.imwrite(os.path.join(path , img_name), frame)
-                capture_frame(num)
-                pi.set_PWM_dutycycle(PIN_R, 1000)
+                if num % 10 == 1:
+                    saved_frame=gray
+                if num % 10 == 0 and num != 0:
+                    frame_delta = cv2.absdiff(saved_frame, gray)
+                    new_thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
+                    print(np.sum(new_thresh))
+                    if np.sum(new_thresh) > 0:
+                        firstFrame = gray
+                if pic:
+                    start_time = datetime.datetime.now()
+                    img_name = "{}.picture.png".format(start_time.strftime("%A_%d_%B_%Y_%I:%M:%S%p_video"))
+                    path = '/Users/haroonkhazi/Desktop/EECS377/final_project/videos'
+                    cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
+                        (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+                    cv2.imwrite(os.path.join(path , img_name), frame)
+                else:
+                    capture_frame()
+                num=num+1
 
 
         cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
