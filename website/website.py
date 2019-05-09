@@ -102,6 +102,11 @@ def done():
     print(files)
     return render_template('video.html', files=files)
 
+@app.route('/snap-shot')
+def logo():
+    img = './static/snap-shot.svg'
+    return render_template('index.html', img=img)
+
 @app.route('/logout')
 def logout():
     session.clear()

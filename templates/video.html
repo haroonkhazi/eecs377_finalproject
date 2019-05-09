@@ -25,9 +25,11 @@ div.desc {
 </head>
 <body>
 {% for file in files %}
-<img src="/static/{{file}}" width="600" height="400">
+<video width="400" height="600" autoplay>
+  <source src="/static/{{file}}" type="video/webm">
 {% endfor %}
-<a href="/logout">Logout</a>
+</video>
+
 
 
 </body>
