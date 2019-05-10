@@ -82,7 +82,7 @@ def callback_handling():
 @app.route('/')
 @requires_auth
 def home():
-    imagepath = "/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/"
+    imagepath = "/home/ubuntu/website/templates/static/"
     files =[]
     for (dirpath, dirnames, filenames) in walk(imagepath):
         files.extend(filenames)
@@ -94,7 +94,7 @@ def home():
 @app.route('/videos')
 @requires_auth
 def done():
-    imagepath = "/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/"
+    imagepath = "/home/ubuntu/website/templates/static/"
     files = []
     for (dirpath, dirnames, filenames) in walk(imagepath):
         files.extend(filenames)
@@ -107,11 +107,11 @@ def done():
 @app.route('/static/<pngFile>.png')
 @requires_auth
 def serve_image(pngFile):
-    return send_file('/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/'+pngFile+'.png')
+    return send_file('/home/ubuntu/website/templates/static/'+pngFile+'.png')
 
 @app.route('/static/<svgFile>.svg')
 def serve_content(svgFile):
-    return send_file('/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/'+svgFile+'.svg', mimetype='image/svg+xml')
+    return send_file('/home/ubuntu/website/templates/static/'+svgFile+'.svg', mimetype='image/svg+xml')
 
 @app.route('/logout')
 def logout():
