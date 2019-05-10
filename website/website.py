@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify, session, url_for
+from flask import Markup, send_file
 from six.moves.urllib.parse import urlencode
 from werkzeug.exceptions import HTTPException
 import os
@@ -9,6 +10,7 @@ from os import environ as env
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname, realpath
 import constants
+#from StringIO import StringIO
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -80,7 +82,7 @@ def callback_handling():
 @app.route('/')
 @requires_auth
 def home():
-    imagepath = "/Users/haroonkhazi/desktop/eecs377/final_project/website/templates/static/"
+    imagepath = "/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/"
     files =[]
     for (dirpath, dirnames, filenames) in walk(imagepath):
         files.extend(filenames)
@@ -92,20 +94,24 @@ def home():
 @app.route('/videos')
 @requires_auth
 def done():
-    imagepath = "/Users/haroonkhazi/desktop/eecs377/final_project/website/templates/static/"
+    imagepath = "/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/"
     files = []
     for (dirpath, dirnames, filenames) in walk(imagepath):
         files.extend(filenames)
         break
-    files = [f for f in files if "video" in f]
+    files = [f for f in files if "mp4" in f]
     files.sort()
     print(files)
     return render_template('video.html', files=files)
 
-@app.route('/snap-shot')
-def logo():
-    img = './static/snap-shot.svg'
-    return render_template('index.html', img=img)
+@app.route('/static/<pngFile>.png')
+@requires_auth
+def serve_image(pngFile):
+    return send_file('/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/'+pngFile+'.png')
+
+@app.route('/static/<svgFile>.svg')
+def serve_content(svgFile):
+    return send_file('/Users/haroonkhazi/Desktop/EECS377/final_project/website/templates/static/'+svgFile+'.svg', mimetype='image/svg+xml')
 
 @app.route('/logout')
 def logout():
